@@ -8,14 +8,16 @@ import {
   SimpleGrid,
   VStack,
 } from "@chakra-ui/react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useMutation } from "react-query";
 import Link from "next/link";
+import * as yup from "yup";
+
 import { Input } from "../../components/Form/Input";
 import { Header } from "../../components/Header";
 import { Sidebar } from "../../components/Sidebar";
-import { SubmitHandler, useForm } from "react-hook-form";
-import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useRouter } from "next/router";
+import { api } from "../../services/api";
 
 type CreateUserFormData = {
   name: string;
@@ -37,6 +39,15 @@ const createUserFormSchema = yup.object().shape({
 });
 
 export default function CreateUser() {
+  const createUser = useMutation(async (user: CreateUserFormData) => {
+    const response = api.post("users", {
+      user: {
+        ...user,
+        created_at: new Date(),
+      },
+    });
+  });
+
   const { register, handleSubmit, formState } = useForm({
     resolver: yupResolver(createUserFormSchema),
   });
