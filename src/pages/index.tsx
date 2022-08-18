@@ -27,7 +27,6 @@ export default function SignIn() {
   const handleSignIn: SubmitHandler<SignInFormData> = async (values) => {
     await new Promise((resolve) => setTimeout(resolve, 2000));
     console.log(values);
-    router.push("/users");
   };
 
   return (
@@ -54,7 +53,7 @@ export default function SignIn() {
             type="password"
             name="password"
             label="Senha"
-            error={errors.password}
+            // error={errors.password}
             {...register("senha")}
           />
         </Stack>
@@ -65,6 +64,7 @@ export default function SignIn() {
           colorScheme="pink"
           size="lg"
           isLoading={formState.isSubmitting}
+          onClick={() => router.push("/users")}
         >
           Entrar
         </Button>
